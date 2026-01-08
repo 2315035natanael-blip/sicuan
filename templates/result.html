@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+  <h2>Hasil Rekomendasi Investasi</h2>
+
+  <!-- RINGKASAN -->
+  <div class="form-card">
+
+    <h3>Ringkasan Kondisi Anda</h3>
+
+    <p><b>Tujuan:</b> {{ r.tujuan }}</p>
+    <p><b>Dana saat ini:</b> Rp {{ "{:,.0f}".format(r.dana) }}</p>
+    <p><b>Target dana:</b> Rp {{ "{:,.0f}".format(r.target) }}</p>
+    <p><b>Profil risiko:</b> {{ r.profil }}</p>
+
+    <hr>
+
+    <h3>Kebutuhan Dana</h3>
+
+    <p>Untuk mencapai target dalam <b>{{ r.bulan }} bulan</b>, Anda perlu menyiapkan sekitar:</p>
+
+    <h2 style="color:#2cb67d;">
+      Rp {{ "{:,.0f}".format(r.kebutuhan_per_bulan) }} / bulan
+    </h2>
+
+    <p style="font-size:14px;">
+      Estimasi return per bulan: <b>{{ r.return_bulanan }}%</b><br>
+      Asumsi inflasi: <b>{{ r.inflasi }}% / bulan</b>
+    </p>
+
+    {% if r.realistis %}
+      <p style="color:green; font-weight:600;">
+        Target masih tergolong realistis dengan profil risiko Anda.
+      </p>
+    {% else %}
+      <p style="color:red; font-weight:600;">
+        Target cukup berat untuk dicapai dengan kondisi saat ini.
+      </p>
+      <p style="font-size:13px;">Disarankan menambah waktu atau menaikkan dana awal.</p>
+    {% endif %}
+
+  </div>
+
+
+  <!-- ALOKASI -->
+  <div class="form-card">
+
+    <h3>Alokasi Dana Investasi (Dana Saat Ini)</h3>
+
+    <table class="admin-table">
+      <tr>
+        <th>Aset</th>
+        <th>Persentase</th>
+        <th>Dana</th>
+      </tr>
+
+      {% for nama, persen, dana in r.alokasi %}
+      <tr>
+        <td>{{ nama }}</td>
+        <td>{{ persen }}%</td>
+        <td>Rp {{ "{:,.0f}".format(dana) }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+  </div>
+
+
+  <!-- MARKET -->
+  <div class="form-card">
+
+    <h3>Kondisi Pasar Saat Ini</h3>
+
+    <table class="admin-table">
+      <tr>
+        <th>Saham</th>
+        <th>Tren</th>
+        <th>Keyakinan</th>
+      </tr>
+
+      {% for k, v in r.market.items() %}
+      <tr>
+        <td>{{ k }}</td>
+        <td>
+          {% if v.trend == "Uptrend" %}
+            📈 Naik
+          {% elif v.trend == "Downtrend" %}
+            📉 Turun
+          {% else %}
+            ➖ Sideways
+          {% endif %}
+        </td>
+        <td>{{ v.confidence }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <p style="font-size:12px; color:#777; margin-top:10px;">
+      *Rekomendasi ini bersifat edukatif dan bukan jaminan hasil investasi.
+    </p>
+
+  </div>
+
+  <a href="/" class="start-button">Ulangi Simulasi</a>
+
+</div>
+
+{% endblock %}

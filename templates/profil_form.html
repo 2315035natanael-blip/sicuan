@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="form-card">
+  <h2>Formulir Profil Risiko</h2>
+
+  <form method="POST">
+    {% set pertanyaan = [
+      "Berapa persen dari total kekayaan Anda yang siap Anda investasikan jangka panjang?",
+      "Jika investasi Anda turun tajam, apa yang Anda lakukan?",
+      "Tujuan utama Anda dalam berinvestasi?",
+      "Seberapa besar kerugian yang masih bisa Anda terima?",
+      "Jenis portofolio yang Anda nyaman gunakan?",
+      "Seberapa besar fluktuasi nilai investasi yang bisa Anda toleransi?",
+      "Jangka waktu rencana investasi Anda?",
+      "Strategi Anda saat pasar tidak stabil?"
+    ] %}
+    {% set opsi = [
+      ["Kurang dari 10%", "10% - 30%", "31% - 50%", "Lebih dari 50%"],
+      ["Langsung menjual semuanya", "Menjual sebagian", "Menunggu sampai pulih", "Menambah investasi"],
+      ["Menghindari kerugian", "Mendapatkan pendapatan tetap", "Gabungan pendapatan dan pertumbuhan", "Pertumbuhan kekayaan maksimal"],
+      ["Tidak bisa menerima kerugian", "Maksimal 5%", "Maksimal 15%", "Lebih dari 20%"],
+      ["Risiko sangat rendah, hasil kecil", "Risiko rendah, hasil sedang", "Risiko sedang, hasil lebih tinggi", "Risiko tinggi, hasil tinggi"],
+      ["± 5%", "± 10%", "± 15%", "Lebih dari ± 15%"],
+      ["Kurang dari 1 tahun", "1 - 3 tahun", "3 - 5 tahun", "Lebih dari 5 tahun"],
+      ["Pindahkan ke aset aman", "Kurangi aset berisiko", "Tetap dengan strategi awal", "Tambah aset berisiko"]
+    ] %}
+    {% for i in range(8) %}
+      <div class="question-block">
+        <p><strong>{{ i+1 }}. {{ pertanyaan[i] }}</strong></p>
+        {% for j in range(4) %}
+          <label><input type="radio" name="q{{ i+1 }}" value="{{ j+1 }}" required> {{ opsi[i][j] }}</label><br>
+        {% endfor %}
+      </div><br>
+    {% endfor %}
+
+    <input type="submit" value="Simpan Profil Risiko" class="start-button">
+  </form>
+</div>
+{% endblock %}
