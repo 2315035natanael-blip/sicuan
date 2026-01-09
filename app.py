@@ -26,6 +26,20 @@ def home():
 
 
 # ======================
+# ABOUT & CONTACT
+# ======================
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+@app.route("/contact")
+def contact():
+    return render_template("contact.html")
+
+
+# ======================
 # START FORM
 # ======================
 
@@ -75,9 +89,7 @@ def profil_form():
 def advisor():
     if request.method == "POST":
 
-        # === AMBIL DATA FORM ===
         tujuan = request.form.get("tujuan")
-
         dana = int(request.form.get("dana_awal"))
         target = int(request.form.get("harga"))
 
@@ -98,17 +110,14 @@ def advisor():
         inflasi_bulanan = 0.003  # 0.3% / bulan
 
         if profil == "konservatif":
-            r = 0.008     # ~1% per bulan
+            r = 0.008
         elif profil == "moderat":
             r = 0.015
         else:
             r = 0.03
 
-        # return sudah dianggap NET inflasi
         fv = future_value(dana, r, bulan)
-
         realistis = fv >= target
-
         kebutuhan_per_bulan = max(0, (target - dana) // max(1, bulan))
 
         # =====================
@@ -162,6 +171,20 @@ def advisor():
         return render_template("result.html", r=result)
 
     return render_template("advisor.html")
+
+
+# ======================
+# ADMIN
+# ======================
+
+@app.route("/admin")
+def admin_login():
+    return render_template("admin_login.html")
+
+
+@app.route("/admin/dashboard")
+def admin_dashboard():
+    return render_template("admin_dashboard.html")
 
 
 # ======================
